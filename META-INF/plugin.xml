@@ -1,0 +1,50 @@
+<idea-plugin version="2">
+  <id>com.loma.android.dev.util.json.pojo</id>
+  <name>JsonPojo</name>
+  <description><![CDATA[
+<html>quickly to convert a JSON string to an entity class ..<br>
+<a href="https://github.com/skyloma/JsonPojo"> openSource</a>
+      </html>
+      ]]>
+  </description>
+  <version>1.0</version>
+  <vendor email="skyloma80@gmail.com">skyloma</vendor>
+
+  <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+  </change-notes>
+
+  <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="131"/>
+
+  <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action    id="Pojo2dataAction" class="PojoAction" text="json生成数据类"
+            >
+
+      <add-to-group group-id="GenerateGroup" anchor="first"/>
+    </action>
+  </actions>
+
+
+</idea-plugin>

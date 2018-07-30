@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_jsonpojo" default="compile.module.jsonpojo">
+  <dirname property="module.jsonpojo.basedir" file="${ant.file.module_jsonpojo}"/>
+  
+  <property name="module.jdk.home.jsonpojo" value="${jdk.home.intellij_idea_iu-141.1532.4}"/>
+  <property name="module.jdk.bin.jsonpojo" value="${jdk.bin.intellij_idea_iu-141.1532.4}"/>
+  <property name="module.jdk.classpath.jsonpojo" value="jdk.classpath.intellij_idea_iu-141.1532.4"/>
+  
+  <property name="compiler.args.jsonpojo" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="jsonpojo.output.dir" value="${module.jsonpojo.basedir}/out/production/JsonPojo"/>
+  <property name="jsonpojo.testoutput.dir" value="${module.jsonpojo.basedir}/out/test/JsonPojo"/>
+  
+  <path id="jsonpojo.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="jsonpojo.module.production.classpath">
+    <path refid="${module.jdk.classpath.jsonpojo}"/>
+  </path>
+  
+  <path id="jsonpojo.runtime.production.module.classpath">
+    <pathelement location="${jsonpojo.output.dir}"/>
+  </path>
+  
+  <path id="jsonpojo.module.classpath">
+    <path refid="${module.jdk.classpath.jsonpojo}"/>
+    <pathelement location="${jsonpojo.output.dir}"/>
+  </path>
+  
+  <path id="jsonpojo.runtime.module.classpath">
+    <pathelement location="${jsonpojo.testoutput.dir}"/>
+    <pathelement location="${jsonpojo.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.jsonpojo">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.jsonpojo">
+    <patternset refid="excluded.from.module.jsonpojo"/>
+  </patternset>
+  
+  <path id="jsonpojo.module.sourcepath">
+    <dirset dir="${module.jsonpojo.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.jsonpojo" depends="compile.module.jsonpojo.production,compile.module.jsonpojo.tests" description="Compile module JsonPojo"/>
+  
+  <target name="compile.module.jsonpojo.production" depends="register.custom.compilers" description="Compile module JsonPojo; production classes">
+    <mkdir dir="${jsonpojo.output.dir}"/>
+    <javac2 destdir="${jsonpojo.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jsonpojo}/javac">
+      <compilerarg line="${compiler.args.jsonpojo}"/>
+      <bootclasspath refid="jsonpojo.module.bootclasspath"/>
+      <classpath refid="jsonpojo.module.production.classpath"/>
+      <src refid="jsonpojo.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.jsonpojo"/>
+    </javac2>
+    
+    <copy todir="${jsonpojo.output.dir}">
+      <fileset dir="${module.jsonpojo.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.jsonpojo.tests" depends="register.custom.compilers,compile.module.jsonpojo.production" description="compile module JsonPojo; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.jsonpojo" description="cleanup module">
+    <delete dir="${jsonpojo.output.dir}"/>
+    <delete dir="${jsonpojo.testoutput.dir}"/>
+  </target>
+  
+  <property name="jsonpojo.plugin.path.jar" value="${module.jsonpojo.basedir}/JsonPojo.jar"/>
+  
+  <!-- Build archive for plugin 'JsonPojo' -->
+  <target name="plugin.build.jar.jsonpojo" depends="compile.module.jsonpojo" description="Build plugin archive for module &#39;JsonPojo&#39;">
+    <jar destfile="${jsonpojo.plugin.path.jar}" duplicate="preserve">
+      <zipfileset dir="${module.jsonpojo.basedir}/out/production/JsonPojo"/>
+      <zipfileset file="${module.jsonpojo.basedir}/META-INF/plugin.xml" prefix="META-INF"/>
+      <manifest>
+        <attribute name="Created-By" value="IntelliJ IDEA"/>
+        <attribute name="Manifest-Version" value="1.0"/>
+      </manifest>
+    </jar>
+  </target>
+</project>
